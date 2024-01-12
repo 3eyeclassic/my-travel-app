@@ -1,0 +1,17 @@
+.searchBoxContainer {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    z-index: 5;
+    background-color: white; /* 背景色を白に設定 */
+    border-radius: 8px; /* 角を丸く */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 影を追加 */
+    padding: 8px; /* 内側の余白 */
+  }
+  
+  .searchBoxInput {
+    width: 100%;
+  }
+  
