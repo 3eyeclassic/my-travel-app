@@ -6,12 +6,13 @@ import './SearchBox.css';
 
 const SearchBox = () => {
   const [address, setAddress] = useState('');
-  const { setPlaces } = useContext(MapContext);
+  const { setPlaces, setCurrentLocation } = useContext(MapContext); // setCurrentLocation を追加
 
   const handleSelect = async (value) => {
     try {
       const results = await geocodeByAddress(value);
       const latLng = await getLatLng(results[0]);
+      setCurrentLocation(latLng);
       setAddress(value);
       setPlaces(prevPlaces => [...prevPlaces, { address, latLng }]);
     } catch (error) {
