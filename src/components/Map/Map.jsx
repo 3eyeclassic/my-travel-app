@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'; // useContext をインポート
+import React, { useContext, useEffect, useRef } from 'react';
 import { GoogleMap } from '@react-google-maps/api';
 import { MapContext } from '../../contexts/MapContext';
-import './Map.css';
 
 const containerStyle = {
     width: "100%",
@@ -14,15 +13,41 @@ const center = {
 };
 
 const Map = () => {
-    const { currentLocation } = useContext(MapContext); // MapContext から現在の地点を取得
-  
+    const { currentLocation, markerPosition } = useContext(MapContext);
+    const mapRef = useRef(null);
+    const markerRef = useRef(null);
+
+    // 中心位置とズームレベルを更新
+  useEffect(() => {
+    if (mapRef.current && currentLocation) {
+      mapRef.current.panTo(currentLocation);
+      mapRef.current.setZoom(15); // ズームレベルを15に設定
+    }
+  }, [currentLocation]);
+
+  // マーカーの設定
+  useEffect(() => {
+    if (mapRef.current && markerPosition) {
+      if (!markerRef.current) {
+        markerRef.current = new window.google.maps.Marker({
+          position: markerPosition,
+          map: mapRef.current,
+          label: "📍"
+        });
+      } else {
+        markerRef.current.setPosition(markerPosition);
+      }
+    }
+  }, [markerPosition]);
+
     return (
-      <GoogleMap
+        <GoogleMap
         mapContainerStyle={containerStyle}
-        center={currentLocation || { lat: 35.681236, lng: 139.767125 }} // 現在の地点があればそれを中心に、なければデフォルトの値を使用
+        center={currentLocation || center}
         zoom={15}
+        onLoad={map => mapRef.current = map} // マップの参照を保存
       >
-        {/* マーカーなどの子要素をここに配置 */}
+        {/* 他の子要素 */}
       </GoogleMap>
     );
   }
