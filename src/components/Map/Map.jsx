@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow } from '@react-google-maps/api';
 import { MapContext } from '../../contexts/MapContext';
 
 const containerStyle = {
@@ -13,7 +13,7 @@ const center = {
 };
 
 const Map = () => {
-    const { currentLocation, markerPosition } = useContext(MapContext);
+    const { currentLocation, markerPosition, searchedPlaces } = useContext(MapContext);
     const mapRef = useRef(null);
     const markerRef = useRef(null);
 
@@ -47,7 +47,17 @@ const Map = () => {
         zoom={15}
         onLoad={map => mapRef.current = map} // マップの参照を保存
       >
-        {/* 他の子要素 */}
+        {searchedPlaces.map((place, index) => (
+            <InfoWindow
+            key={index}
+            position={place.location}
+        >
+              <div>
+                <h3>{place.address}</h3>
+                {/* その他の詳細情報 */}
+              </div>
+            </InfoWindow>
+          ))}
       </GoogleMap>
     );
   }

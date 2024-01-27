@@ -7,7 +7,7 @@ import './SearchBox.css';
 const SearchBox = () => {
   const [address, setAddress] = useState('');
   // MapContext から setCurrentLocation と setMarkerPosition を取得
-  const { setCurrentLocation, setMarkerPosition } = useContext(MapContext);
+  const { setCurrentLocation, setMarkerPosition, setSearchedPlaces } = useContext(MapContext);
 
   const handleSelect = async (value) => {
     try {
@@ -16,6 +16,12 @@ const SearchBox = () => {
       setAddress(value);
       setCurrentLocation(latLng); // 地図の中心を更新
       setMarkerPosition(latLng); // マーカーの位置を更新
+      // 検索された地点の情報を配列に追加
+      setSearchedPlaces(prevPlaces => {
+        const newPlaces = [...prevPlaces, { address: value, location: latLng }];
+        console.log("検索された地点:", newPlaces); // コンソールに出力
+        return newPlaces;
+      });
     } catch (error) {
       console.error('Error:', error);
     }
