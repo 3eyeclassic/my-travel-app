@@ -26,29 +26,27 @@ const Map = () => {
             onLoad={(map) => (mapRef.current = map)}
         >
             {searchedPlaces.map((place, index) => (
-                <Marker key={index} position={place.location}>
                     <InfoWindow position={place.location}>
-                        <div>
-                            <h3>{place.name}</h3>
-                            <p>住所: {place.address}</p>
-                            <p>評価: {place.rating}</p>
-                            {place.photos && (
-                                <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                                    {place.photos.map((photoUrl, photoIndex) => (
-                                        <ImageListItem key={photoIndex}>
-                                            <img
-                                                src={photoUrl}
-                                                alt={`地点画像 ${photoIndex + 1}`}
-                                                loading="lazy"
-                                            />
-                                        </ImageListItem>
-                                    ))}
-                                </ImageList>
-                            )}
-                        </div>
-                    </InfoWindow>
-                </Marker>
-            ))}
+                    <div>
+                        <h3>{place.name}</h3>
+                        <p>住所: {place.address}</p>
+                        <p>評価: {place.rating}</p>
+                        {place.photos && (
+                            <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                                {place.photos.map((photoUrl, photoIndex) => (
+                                    <ImageListItem key={photoIndex}>
+                                        <img
+                                            src={photoUrl}
+                                            alt={`地点画像 ${photoIndex + 1}`}
+                                            loading="lazy"
+                                        />
+                                    </ImageListItem>
+                                ))}
+                            </ImageList>
+                        )}
+                    </div>
+                </InfoWindow>
+        ))}
         </GoogleMap>
     );
 };
