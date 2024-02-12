@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { GoogleMap, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow, Marker } from '@react-google-maps/api';
 import { MapContext } from '../../contexts/MapContext';
 
 const containerStyle = {
@@ -13,53 +13,39 @@ const center = {
 };
 
 const Map = () => {
-    const { currentLocation, markerPosition, searchedPlaces } = useContext(MapContext);
+    const { currentLocation, searchedPlaces } = useContext(MapContext);
     const mapRef = useRef(null);
-    const markerRef = useRef(null);
 
-    // 中心位置とズームレベルを更新
-  useEffect(() => {
-    if (mapRef.current && currentLocation) {
-      mapRef.current.panTo(currentLocation);
-      mapRef.current.setZoom(15); // ズームレベルを15に設定
-    }
-  }, [currentLocation]);
-
-  // マーカーの設定
-  useEffect(() => {
-    if (mapRef.current && markerPosition) {
-      if (!markerRef.current) {
-        markerRef.current = new window.google.maps.Marker({
-          position: markerPosition,
-          map: mapRef.current,
-          label: "📍"
-        });
-      } else {
-        markerRef.current.setPosition(markerPosition);
-      }
-    }
-  }, [markerPosition]);
+    useEffect(() => {
+        if (mapRef.current && currentLocation) {
+            mapRef.current.panTo(currentLocation);
+            mapRef.current.setZoom(15); // ズームレベルを15に設定
+        }
+    }, [currentLocation]);
 
     return (
         <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={currentLocation || center}
-        zoom={15}
-        onLoad={map => mapRef.current = map} // マップの参照を保存
-      >
-        {searchedPlaces.map((place, index) => (
-            <InfoWindow
-            key={index}
-            position={place.location}
+            mapContainerStyle={containerStyle}
+            center={currentLocation || center}
+            zoom={15}
+            onLoad={map => (mapRef.current = map)} // マップの参照を保存
         >
-              <div>
-                <h3>{place.address}</h3>
-                {/* その他の詳細情報 */}
-              </div>
-            </InfoWindow>
-          ))}
-      </GoogleMap>
+            {searchedPlaces.map((place, index) => (
+                <Marker key={index} position={place.location} label={place.name}>
+                    <InfoWindow position={place.location}>
+                        <div>
+                            <h3>{place.name}</h3>
+                            <p>住所: {place.address}</p>
+                            <p>評価: {place.rating}</p>
+                            {place.photos && place.photos.map((photoUrl, photoIndex) => (
+                                <img key={photoIndex} src={photoUrl} alt={`地点画像 ${photoIndex + 1}`} style={{ width: '100px', height: '100px', margin: '5px' }} />
+                            ))}
+                        </div>
+                    </InfoWindow>
+                </Marker>
+            ))}
+        </GoogleMap>
     );
-  }
+}
 
 export default Map;
