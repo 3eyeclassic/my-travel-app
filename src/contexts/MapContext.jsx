@@ -10,7 +10,7 @@ export const MapProvider = ({ children }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [markerPosition, setMarkerPosition] = useState(null); // マーカー位置の状態を追加
   const [searchedPlaces, setSearchedPlaces] = useState([]); // 検索地点の配列の状態を追加
-
+  const [zoomLevel, setZoomLevel] = useState(15); // ズームレベルの状態を追加
 
   return (
     <MapContext.Provider value={{
@@ -18,7 +18,8 @@ export const MapProvider = ({ children }) => {
       selectedPlace, setSelectedPlace,
       searchResults, setSearchResults,
       markerPosition, setMarkerPosition, // マーカー位置の状態を提供
-      searchedPlaces, setSearchedPlaces // 検索地点の配列とその更新関数を提供
+      searchedPlaces, setSearchedPlaces, // 検索地点の配列とその更新関数を提供
+      zoomLevel, setZoomLevel // ズームレベルの状態とその更新関数を提供
     }}>
       {children}
     </MapContext.Provider>
