@@ -6,19 +6,24 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import './Sidebar.css';
-// useSidebarContextをインポートする
 import { useSidebarContext } from '../../contexts/SidebarContext';
+import { useMapContext } from '../../contexts/MapContext'; // MapContextからuseMapContextをインポート
 
 const SidebarComponent = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  // useSidebarContextを使用してsavedPlacesを取得
-  const { savedPlaces } = useSidebarContext();
+  const { savedPlaces } = useSidebarContext(); // savedPlacesを取得
+  const { setCurrentLocation } = useMapContext(); // setCurrentLocationを取得
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
     setDrawerOpen(open);
+  };
+
+  // 地点をクリックした時の処理
+  const handleLocationClick = (location) => {
+    setCurrentLocation(location); // クリックされた地点をマップの中心に設定
   };
 
   return (
@@ -38,7 +43,7 @@ const SidebarComponent = () => {
       >
         <List>
           {savedPlaces.map((place, index) => (
-            <ListItem button key={index}>
+            <ListItem button key={index} onClick={() => handleLocationClick(place.location)}>
                 <ListItemText primary={place.name} secondary={place.address} />
             </ListItem>
           ))}
