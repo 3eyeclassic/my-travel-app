@@ -1,7 +1,6 @@
 .current-location-button {
-    position: fixed; /* 画面に対して固定位置 */
-    bottom: 200px; /* 下から20pxの位置 */
-    right: 20px; /* 右から20pxの位置 */
-    z-index: 10; /* 他の要素より前面に表示するためのz-index */
-  }
-  
+  position: fixed; /* 位置を固定 */
+  bottom: 20px; /* 下端から20pxの位置に設定 */
+  left: 10px; /* 右端から20pxの位置に設定 */
+  z-index: 1000; /* 他の要素の上に表示 */
+}

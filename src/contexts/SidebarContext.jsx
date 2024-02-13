@@ -1,17 +1,18 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-// SidebarContext の作成
-export const SidebarContext = createContext();
+const SidebarContext = createContext();
 
-// SidebarContext プロバイダーの定義
 export const SidebarProvider = ({ children }) => {
-  const [placeLists, setPlaceLists] = useState([]);
+  const [savedPlaces, setSavedPlaces] = useState([]);
 
-  // リスト管理機能などの関数を定義
-  // ...
+  // 関数名をそのまま提供するように変更
+  const addPlaceToSidebar = (place) => {
+    setSavedPlaces((prevPlaces) => [...prevPlaces, place]);
+  };
 
   return (
-    <SidebarContext.Provider value={{ placeLists, setPlaceLists }}>
+    // 提供する値に関数名をそのまま使用
+    <SidebarContext.Provider value={{ savedPlaces, addPlaceToSidebar }}>
       {children}
     </SidebarContext.Provider>
   );

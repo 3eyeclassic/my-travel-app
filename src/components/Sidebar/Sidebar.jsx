@@ -6,9 +6,13 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import './Sidebar.css';
+// useSidebarContextをインポートする
+import { useSidebarContext } from '../../contexts/SidebarContext';
 
 const SidebarComponent = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // useSidebarContextを使用してsavedPlacesを取得
+  const { savedPlaces } = useSidebarContext();
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -22,7 +26,7 @@ const SidebarComponent = () => {
       <IconButton
         color="inherit"
         aria-label="open drawer"
-        className="keyboard-arrow-icon" // スタイルを適用
+        className="keyboard-arrow-icon"
         onClick={toggleDrawer(true)}
       >
         <KeyboardArrowRightIcon />
@@ -32,12 +36,12 @@ const SidebarComponent = () => {
         open={drawerOpen}
         onClose={toggleDrawer(false)}
       >
-        <List >
-          {/* リスト項目 */}
-            <ListItem button>
-                <ListItemText primary="地点1" />
+        <List>
+          {savedPlaces.map((place, index) => (
+            <ListItem button key={index}>
+                <ListItemText primary={place.name} secondary={place.address} />
             </ListItem>
-            {/* 他のリスト項目 */}
+          ))}
         </List>
       </Drawer>
     </div>
