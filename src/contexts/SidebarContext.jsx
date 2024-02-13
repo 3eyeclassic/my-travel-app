@@ -4,19 +4,35 @@ const SidebarContext = createContext();
 
 export const SidebarProvider = ({ children }) => {
   const [savedPlaces, setSavedPlaces] = useState([]);
+  const [lists, setLists] = useState([]); // リスト名とそれに関連する地点を格納する新しい状態
 
-  // 関数名をそのまま提供するように変更
   const addPlaceToSidebar = (place) => {
     setSavedPlaces((prevPlaces) => [...prevPlaces, place]);
   };
 
+  const addNewList = (listName) => {
+    setLists((prevLists) => [...prevLists, { name: listName, places: [] }]);
+  };
+
+  const addPlaceToList = (listName, place) => {
+    setLists((prevLists) => 
+      prevLists.map((list) => 
+        list.name === listName ? { ...list, places: [...list.places, place] } : list
+      )
+    );
+  };
+
   return (
-    // 提供する値に関数名をそのまま使用
-    <SidebarContext.Provider value={{ savedPlaces, addPlaceToSidebar }}>
+    <SidebarContext.Provider value={{
+      savedPlaces,
+      lists,
+      addPlaceToSidebar,
+      addNewList,
+      addPlaceToList,
+    }}>
       {children}
     </SidebarContext.Provider>
   );
 };
 
-// コンテキストを使用するためのカスタムフック
 export const useSidebarContext = () => useContext(SidebarContext);
